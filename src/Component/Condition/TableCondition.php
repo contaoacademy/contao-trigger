@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace EBlick\ContaoTrigger\Component\Condition;
 
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
@@ -223,7 +222,7 @@ class TableCondition implements ConditionInterface, DataContainerComponentInterf
         if (!empty($log)) {
             $query .= ' AND id NOT IN (?)';
             $params[] = $logIds;
-            $types[] = ArrayParameterType::INTEGER;
+            $types[] = Connection::PARAM_INT_ARRAY;
         }
 
         // time condition
