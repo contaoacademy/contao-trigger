@@ -13,8 +13,6 @@ namespace EBlick\ContaoTrigger\Test\EventListener\DataContainer;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Doctrine\DBAL\Schema\Name\Identifier;
-use Doctrine\DBAL\Schema\Name\OptionallyQualifiedName;
 use Doctrine\DBAL\Schema\Table;
 use EBlick\ContaoTrigger\EventListener\DataContainer\TableCondition;
 use EBlick\ContaoTrigger\ExpressionLanguage\RowDataCompiler;
@@ -27,7 +25,7 @@ class TableConditionTest extends TestCase
         $schemaManager = $this->createMock(AbstractSchemaManager::class);
         $schemaManager
             ->expects($this->once())
-            ->method('introspectTables')
+            ->method('listTables')
             ->willReturn([$this->mockTable('tl_eblick_trigger'), $this->mockTable('testTable2')])
         ;
 
@@ -52,8 +50,8 @@ class TableConditionTest extends TestCase
         $table = $this->createMock(Table::class);
         $table
             ->expects($this->once())
-            ->method('getObjectName')
-            ->willReturn(new OptionallyQualifiedName(Identifier::unquoted($name), null))
+            ->method('getName')
+            ->willReturn($name)
         ;
 
         return $table;

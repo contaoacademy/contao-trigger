@@ -42,8 +42,8 @@ class TableCondition
     public function onGetTables(): array
     {
         $tables = array_map(
-            static fn (Table $table): string => $table->getObjectName()->getUnqualifiedName()->getValue(),
-            $this->schemaManager->introspectTables(),
+            static fn (Table $table): string => $table->getName(),
+            $this->schemaManager->listTables(),
         );
 
         // exclude tables
@@ -101,9 +101,9 @@ class TableCondition
         /** @noinspection StaticInvocationViaThisInspection */
         $controller->loadLanguageFile($table);
 
-        foreach ($this->schemaManager->introspectTableColumnsByUnquotedName($table) as $column) {
+        foreach ($this->schemaManager->listTableColumns($table) as $column) {
             if ($this->canBeDateTimeColumn($column)) {
-                $identifier = $column->getObjectName()->getIdentifier()->getValue();
+                $identifier = $column->getName();
 
                 $columns[$identifier] = $this->buildFieldLabel($table, $identifier);
             }
@@ -120,8 +120,8 @@ class TableCondition
 
         $columns = [];
 
-        foreach ($this->schemaManager->introspectTableColumnsByUnquotedName($dc->getActiveRecord()['cnd_table_src']) as $column) {
-            $columns[] = $column->getObjectName()->getIdentifier()->getValue();
+        foreach ($this->schemaManager->listTableColumns($dc->getActiveRecord()['cnd_table_src']) as $column) {
+            $columns[] = $column->getName();
         }
 
         // throws syntax error if invalid
@@ -136,7 +136,7 @@ class TableCondition
 
         return match (true) {
             $type instanceof StringType => 10 === $column->getLength(),
-            $type instanceof IntegerType => !\in_array($column->getObjectName()->getIdentifier()->getValue(), ['id', 'pid'], true)
+            $type instanceof IntegerType => !\in_array($column->getName(), ['id', 'pid'], true)
                 && (!$column->getLength() || $column->getLength() >= 10),
             $type instanceof DateTimeType, $type instanceof DateType, $type instanceof TimeType => true,
             default => false,

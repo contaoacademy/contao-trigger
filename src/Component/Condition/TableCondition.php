@@ -202,8 +202,8 @@ class TableCondition implements ConditionInterface, DataContainerComponentInterf
     private function getColumnNames(string $srcTable): array
     {
         return array_map(
-            static fn (Column $column): string => $column->getObjectName()->getIdentifier()->getValue(),
-            $this->schemaManager->introspectTableColumnsByUnquotedName($srcTable),
+            static fn (Column $column): string => $column->getName(),
+            $this->schemaManager->listTableColumns($srcTable),
         );
     }
 

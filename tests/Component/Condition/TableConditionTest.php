@@ -14,8 +14,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Name\Identifier;
-use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use EBlick\ContaoTrigger\Component\Condition\TableCondition;
 use EBlick\ContaoTrigger\ExpressionLanguage\RowDataCompiler;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +45,7 @@ class TableConditionTest extends TestCase
 
         $schemaManager = $this->createStub(AbstractSchemaManager::class);
         $schemaManager
-            ->method('introspectTableColumnsByUnquotedName')
+            ->method('listTableColumns')
             ->with('testTable')
             ->willReturn($columns)
         ;
@@ -86,8 +84,8 @@ class TableConditionTest extends TestCase
         $column = $this->createMock(Column::class);
         $column
             ->expects($this->once())
-            ->method('getObjectName')
-            ->willReturn(new UnqualifiedName(Identifier::unquoted($name)))
+            ->method('getName')
+            ->willReturn($name)
         ;
 
         return $column;
