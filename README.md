@@ -1,3 +1,5 @@
+> **Hinweis:** Version mit DBAL3 Support. Falls kein DBAL3-Support nötig ist, bitte das [Original](https://github.com/eblick/contao-trigger) nutzen!
+
 contao-trigger
 ==============
 This bundle adds an extensible **condition ⇒ action** framework to
@@ -29,7 +31,8 @@ By default the following components are available:
 
  - **Actions**
     - **Notification Action**: Allows to send a custom notification via
-      `terminal42\notification-center` (must be installed individually).
+      `terminal42
+otification-center` (must be installed individually).
       The available simple tokens are based on the selected condition
       and are displayed in the backend.
     
