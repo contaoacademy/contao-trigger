@@ -214,7 +214,7 @@ class TableCondition implements ConditionInterface, DataContainerComponentInterf
     {
         $logIds = !empty($log) ? array_keys($log) : [-1];
 
-        $query = 'SELECT * FROM '.$this->connection->quoteSingleIdentifier($trigger->cnd_table_src).' WHERE TRUE';
+        $query = 'SELECT * FROM '.$this->connection->quoteIdentifier($trigger->cnd_table_src).' WHERE TRUE';
         $params = [];
         $types = [];
 
@@ -237,7 +237,7 @@ class TableCondition implements ConditionInterface, DataContainerComponentInterf
             ) {
                 throw new ExecutionException(\sprintf('Invalid time offset "%s"!', $trigger->cnd_table_timeOffsetUnit));
             }
-            $timeColumn = $this->connection->quoteSingleIdentifier(
+            $timeColumn = $this->connection->quoteIdentifier(
                 $trigger->cnd_table_timeColumn,
             );
 
